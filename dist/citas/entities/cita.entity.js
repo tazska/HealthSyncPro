@@ -44,7 +44,10 @@ __decorate([
     __metadata("design:type", medico_entity_1.Medico)
 ], Cita.prototype, "medico", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => diagnostico_entity_1.Diagnostico, (diagnostico) => diagnostico.cita, { cascade: true }),
+    (0, typeorm_1.OneToMany)(() => diagnostico_entity_1.Diagnostico, (diagnostico) => diagnostico.cita, {
+        cascade: true,
+        onDelete: 'CASCADE'
+    }),
     __metadata("design:type", Array)
 ], Cita.prototype, "diagnosticos", void 0);
 exports.Cita = Cita = __decorate([

@@ -10,8 +10,8 @@ export class Diagnostico {
   descripcion: string;
 
   @Column({ length: 100, nullable: true })
-  codigo: string; // Ej: CIE-10
-
+  codigo: string; 
+  
   @Column({ type: 'text', nullable: true })
   notas: string;
 

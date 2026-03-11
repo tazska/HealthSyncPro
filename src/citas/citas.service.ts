@@ -5,6 +5,7 @@ import { Cita } from './entities/cita.entity';
 import { CreateCitaDto } from './dto/create-cita.dto';
 import { MedicosService } from '../medicos/medicos.service';
 import { PacientesService } from '../pacientes/pacientes.service';
+import { UpdateCitaDto } from './dto/update-cita.dto';
 
 @Injectable()
 export class CitasService {
@@ -13,10 +14,10 @@ export class CitasService {
     private readonly citaRepository: Repository<Cita>,
     private readonly medicosService: MedicosService,
     private readonly pacientesService: PacientesService,
-  ) {}
+  ) { }
 
   async create(dto: CreateCitaDto): Promise<Cita> {
-    // ✅ Validación: la fecha no puede ser anterior a hoy
+    //Validación: la fecha 
     const fechaCita = new Date(dto.fechaCita);
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
@@ -39,6 +40,30 @@ export class CitasService {
     return await this.citaRepository.save(cita);
   }
 
+  async update(id: number, dto: UpdateCitaDto): Promise<Cita> {
+    const cita = await this.findOne(id);
+
+    if (dto.fechaCita) {
+      const fechaCita = new Date(dto.fechaCita);
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+      if (fechaCita < hoy) {
+        throw new BadRequestException('La fecha de la cita no puede ser anterior a la fecha actual');
+      }
+      cita.fechaCita = fechaCita;
+    }
+
+    if (dto.medicoId) {
+      cita.medico = await this.medicosService.findOne(dto.medicoId);
+    }
+    if (dto.pacienteId) {
+      cita.paciente = await this.pacientesService.findOne(dto.pacienteId);
+    }
+
+    Object.assign(cita, dto);
+    return await this.citaRepository.save(cita);
+  }
+
   async findAll(): Promise<Cita[]> {
     return await this.citaRepository.find({
       relations: ['diagnosticos'],
@@ -57,7 +82,13 @@ export class CitasService {
   }
 
   async remove(id: number): Promise<void> {
-    await this.findOne(id);
+    const cita = await this.findOne(id);
+    await this.citaRepository
+      .createQueryBuilder()
+      .relation(Cita, 'diagnosticos')
+      .of(cita)
+      .remove(cita.diagnosticos);
+
     await this.citaRepository.delete(id);
   }
 }

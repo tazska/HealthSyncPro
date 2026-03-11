@@ -33,6 +33,14 @@ let MedicosService = class MedicosService {
         });
         return await this.medicoRepository.save(medico);
     }
+    async update(id, dto) {
+        const medico = await this.findOne(id);
+        if (dto.especialidadId) {
+            medico.especialidad = await this.especialidadesService.findOne(dto.especialidadId);
+        }
+        Object.assign(medico, dto);
+        return await this.medicoRepository.save(medico);
+    }
     async findAll() {
         return await this.medicoRepository.find();
     }

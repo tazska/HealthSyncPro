@@ -16,6 +16,7 @@ exports.DiagnosticosController = void 0;
 const common_1 = require("@nestjs/common");
 const diagnosticos_service_1 = require("./diagnosticos.service");
 const create_diagnostico_dto_1 = require("./dto/create-diagnostico.dto");
+const update_diagnostico_dto_1 = require("./dto/update-diagnostico.dto");
 let DiagnosticosController = class DiagnosticosController {
     diagnosticosService;
     constructor(diagnosticosService) {
@@ -24,8 +25,14 @@ let DiagnosticosController = class DiagnosticosController {
     create(citaId, dto) {
         return this.diagnosticosService.create(citaId, dto);
     }
+    update(id, dto) {
+        return this.diagnosticosService.update(id, dto);
+    }
     findByCita(citaId) {
         return this.diagnosticosService.findByCita(citaId);
+    }
+    findOne(id) {
+        return this.diagnosticosService.findOne(id);
     }
     remove(id) {
         return this.diagnosticosService.remove(id);
@@ -41,12 +48,27 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DiagnosticosController.prototype, "create", null);
 __decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, update_diagnostico_dto_1.UpdateDiagnosticoDto]),
+    __metadata("design:returntype", void 0)
+], DiagnosticosController.prototype, "update", null);
+__decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Param)('citaId', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], DiagnosticosController.prototype, "findByCita", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], DiagnosticosController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),

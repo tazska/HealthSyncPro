@@ -46,6 +46,26 @@ let CitasService = class CitasService {
         });
         return await this.citaRepository.save(cita);
     }
+    async update(id, dto) {
+        const cita = await this.findOne(id);
+        if (dto.fechaCita) {
+            const fechaCita = new Date(dto.fechaCita);
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            if (fechaCita < hoy) {
+                throw new common_1.BadRequestException('La fecha de la cita no puede ser anterior a la fecha actual');
+            }
+            cita.fechaCita = fechaCita;
+        }
+        if (dto.medicoId) {
+            cita.medico = await this.medicosService.findOne(dto.medicoId);
+        }
+        if (dto.pacienteId) {
+            cita.paciente = await this.pacientesService.findOne(dto.pacienteId);
+        }
+        Object.assign(cita, dto);
+        return await this.citaRepository.save(cita);
+    }
     async findAll() {
         return await this.citaRepository.find({
             relations: ['diagnosticos'],
@@ -62,7 +82,12 @@ let CitasService = class CitasService {
         return cita;
     }
     async remove(id) {
-        await this.findOne(id);
+        const cita = await this.findOne(id);
+        await this.citaRepository
+            .createQueryBuilder()
+            .relation(cita_entity_1.Cita, 'diagnosticos')
+            .of(cita)
+            .remove(cita.diagnosticos);
         await this.citaRepository.delete(id);
     }
 };

@@ -20,6 +20,9 @@ export class Cita {
   @ManyToOne(() => Medico, (medico) => medico.citas, { eager: true })
   medico: Medico;
 
-  @OneToMany(() => Diagnostico, (diagnostico) => diagnostico.cita, { cascade: true })
+  @OneToMany(() => Diagnostico, (diagnostico) => diagnostico.cita, {
+    cascade: true,
+    onDelete: 'CASCADE' 
+  })
   diagnosticos: Diagnostico[];
 }

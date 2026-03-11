@@ -16,6 +16,7 @@ exports.PacientesController = void 0;
 const common_1 = require("@nestjs/common");
 const pacientes_service_1 = require("./pacientes.service");
 const create_paciente_dto_1 = require("./dto/create-paciente.dto");
+const update_paciente_dto_1 = require("./dto/update-paciente.dto");
 let PacientesController = class PacientesController {
     pacientesService;
     constructor(pacientesService) {
@@ -23,6 +24,9 @@ let PacientesController = class PacientesController {
     }
     create(dto) {
         return this.pacientesService.create(dto);
+    }
+    update(id, dto) {
+        return this.pacientesService.update(id, dto);
     }
     findAll() {
         return this.pacientesService.findAll();
@@ -42,6 +46,14 @@ __decorate([
     __metadata("design:paramtypes", [create_paciente_dto_1.CreatePacienteDto]),
     __metadata("design:returntype", void 0)
 ], PacientesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, update_paciente_dto_1.UpdatePacienteDto]),
+    __metadata("design:returntype", void 0)
+], PacientesController.prototype, "update", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

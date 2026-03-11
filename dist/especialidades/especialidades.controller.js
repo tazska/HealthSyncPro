@@ -16,6 +16,8 @@ exports.EspecialidadesController = void 0;
 const common_1 = require("@nestjs/common");
 const especialidades_service_1 = require("./especialidades.service");
 const create_especialidade_dto_1 = require("./dto/create-especialidade.dto");
+const update_especialidade_dto_1 = require("./dto/update-especialidade.dto");
+const common_2 = require("@nestjs/common");
 let EspecialidadesController = class EspecialidadesController {
     especialidadesService;
     constructor(especialidadesService) {
@@ -23,6 +25,9 @@ let EspecialidadesController = class EspecialidadesController {
     }
     create(dto) {
         return this.especialidadesService.create(dto);
+    }
+    update(id, dto) {
+        return this.especialidadesService.update(id, dto);
     }
     findAll() {
         return this.especialidadesService.findAll();
@@ -42,6 +47,14 @@ __decorate([
     __metadata("design:paramtypes", [create_especialidade_dto_1.CreateEspecialidadeDto]),
     __metadata("design:returntype", void 0)
 ], EspecialidadesController.prototype, "create", null);
+__decorate([
+    (0, common_2.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, update_especialidade_dto_1.UpdateEspecialidadDto]),
+    __metadata("design:returntype", void 0)
+], EspecialidadesController.prototype, "update", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

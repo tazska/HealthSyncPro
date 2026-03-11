@@ -26,6 +26,11 @@ let PacientesService = class PacientesService {
         const paciente = this.pacienteRepository.create(dto);
         return await this.pacienteRepository.save(paciente);
     }
+    async update(id, dto) {
+        const paciente = await this.findOne(id);
+        Object.assign(paciente, dto);
+        return await this.pacienteRepository.save(paciente);
+    }
     async findAll() {
         return await this.pacienteRepository.find();
     }

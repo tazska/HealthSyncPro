@@ -26,6 +26,11 @@ let EspecialidadesService = class EspecialidadesService {
         const especialidad = this.especialidadRepository.create(dto);
         return await this.especialidadRepository.save(especialidad);
     }
+    async update(id, dto) {
+        const especialidad = await this.findOne(id);
+        Object.assign(especialidad, dto);
+        return await this.especialidadRepository.save(especialidad);
+    }
     async findAll() {
         return await this.especialidadRepository.find();
     }

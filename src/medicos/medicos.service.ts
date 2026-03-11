@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Medico } from './entities/medico.entity';
 import { CreateMedicoDto } from './dto/create-medico.dto';
 import { EspecialidadesService } from '../especialidades/especialidades.service';
+import { UpdateMedicoDto } from './dto/update-medico.dto';
 
 @Injectable()
 export class MedicosService {
@@ -11,7 +12,7 @@ export class MedicosService {
     @InjectRepository(Medico)
     private readonly medicoRepository: Repository<Medico>,
     private readonly especialidadesService: EspecialidadesService,
-  ) {}
+  ) { }
 
   async create(dto: CreateMedicoDto): Promise<Medico> {
     const especialidad = await this.especialidadesService.findOne(dto.especialidadId);
@@ -19,6 +20,17 @@ export class MedicosService {
       ...dto,
       especialidad,
     });
+    return await this.medicoRepository.save(medico);
+  }
+
+  async update(id: number, dto: UpdateMedicoDto): Promise<Medico> {
+    const medico = await this.findOne(id);
+
+    if (dto.especialidadId) {
+      medico.especialidad = await this.especialidadesService.findOne(dto.especialidadId);
+    }
+
+    Object.assign(medico, dto);
     return await this.medicoRepository.save(medico);
   }
 

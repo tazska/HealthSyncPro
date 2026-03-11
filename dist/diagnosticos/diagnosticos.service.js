@@ -29,6 +29,21 @@ let DiagnosticosService = class DiagnosticosService {
         });
         return await this.diagnosticoRepository.save(diagnostico);
     }
+    async findOne(id) {
+        const diagnostico = await this.diagnosticoRepository.findOne({ where: { id } });
+        if (!diagnostico) {
+            throw new common_1.NotFoundException(`Diagnóstico #${id} no encontrado`);
+        }
+        return diagnostico;
+    }
+    async update(id, dto) {
+        const diagnostico = await this.diagnosticoRepository.findOne({ where: { id } });
+        if (!diagnostico) {
+            throw new common_1.NotFoundException(`Diagnóstico #${id} no encontrado`);
+        }
+        Object.assign(diagnostico, dto);
+        return await this.diagnosticoRepository.save(diagnostico);
+    }
     async findByCita(citaId) {
         return await this.diagnosticoRepository.find({
             where: { cita: { id: citaId } },

@@ -7,7 +7,7 @@ async function bootstrap() {
 
   // Activa class-validator en todos los endpoints
   app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,       // elimina campos no declarados en el DTO
+    whitelist: true,       
     forbidNonWhitelisted: true,
   }));
 
