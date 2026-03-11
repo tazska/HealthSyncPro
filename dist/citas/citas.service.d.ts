@@ -1,9 +1,15 @@
+import { Repository } from 'typeorm';
+import { Cita } from './entities/cita.entity';
 import { CreateCitaDto } from './dto/create-cita.dto';
-import { UpdateCitaDto } from './dto/update-cita.dto';
+import { MedicosService } from '../medicos/medicos.service';
+import { PacientesService } from '../pacientes/pacientes.service';
 export declare class CitasService {
-    create(createCitaDto: CreateCitaDto): string;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateCitaDto: UpdateCitaDto): string;
-    remove(id: number): string;
+    private readonly citaRepository;
+    private readonly medicosService;
+    private readonly pacientesService;
+    constructor(citaRepository: Repository<Cita>, medicosService: MedicosService, pacientesService: PacientesService);
+    create(dto: CreateCitaDto): Promise<Cita>;
+    findAll(): Promise<Cita[]>;
+    findOne(id: number): Promise<Cita>;
+    remove(id: number): Promise<void>;
 }

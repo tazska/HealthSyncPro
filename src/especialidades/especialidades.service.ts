@@ -1,26 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Especialidad } from './entities/especialidad.entity';
 import { CreateEspecialidadeDto } from './dto/create-especialidade.dto';
-import { UpdateEspecialidadeDto } from './dto/update-especialidade.dto';
 
 @Injectable()
 export class EspecialidadesService {
-  create(createEspecialidadeDto: CreateEspecialidadeDto) {
-    return 'This action adds a new especialidade';
+  constructor(
+    @InjectRepository(Especialidad)
+    private readonly especialidadRepository: Repository<Especialidad>,
+  ) {}
+
+  async create(dto: CreateEspecialidadeDto): Promise<Especialidad> {
+    const especialidad = this.especialidadRepository.create(dto);
+    return await this.especialidadRepository.save(especialidad);
   }
 
-  findAll() {
-    return `This action returns all especialidades`;
+  async findAll(): Promise<Especialidad[]> {
+    return await this.especialidadRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} especialidade`;
+  async findOne(id: number): Promise<Especialidad> {
+    const especialidad = await this.especialidadRepository.findOne({ where: { id } });
+    if (!especialidad) {
+      throw new NotFoundException(`Especialidad #${id} no encontrada`);
+    }
+    return especialidad;
   }
 
-  update(id: number, updateEspecialidadeDto: UpdateEspecialidadeDto) {
-    return `This action updates a #${id} especialidade`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} especialidade`;
+  async remove(id: number): Promise<void> {
+    await this.findOne(id);
+    await this.especialidadRepository.delete(id);
   }
 }

@@ -16,26 +16,22 @@ exports.PacientesController = void 0;
 const common_1 = require("@nestjs/common");
 const pacientes_service_1 = require("./pacientes.service");
 const create_paciente_dto_1 = require("./dto/create-paciente.dto");
-const update_paciente_dto_1 = require("./dto/update-paciente.dto");
 let PacientesController = class PacientesController {
     pacientesService;
     constructor(pacientesService) {
         this.pacientesService = pacientesService;
     }
-    create(createPacienteDto) {
-        return this.pacientesService.create(createPacienteDto);
+    create(dto) {
+        return this.pacientesService.create(dto);
     }
     findAll() {
         return this.pacientesService.findAll();
     }
     findOne(id) {
-        return this.pacientesService.findOne(+id);
-    }
-    update(id, updatePacienteDto) {
-        return this.pacientesService.update(+id, updatePacienteDto);
+        return this.pacientesService.findOne(id);
     }
     remove(id) {
-        return this.pacientesService.remove(+id);
+        return this.pacientesService.remove(id);
     }
 };
 exports.PacientesController = PacientesController;
@@ -54,24 +50,16 @@ __decorate([
 ], PacientesController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], PacientesController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_paciente_dto_1.UpdatePacienteDto]),
-    __metadata("design:returntype", void 0)
-], PacientesController.prototype, "update", null);
-__decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], PacientesController.prototype, "remove", null);
 exports.PacientesController = PacientesController = __decorate([

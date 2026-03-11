@@ -16,26 +16,22 @@ exports.EspecialidadesController = void 0;
 const common_1 = require("@nestjs/common");
 const especialidades_service_1 = require("./especialidades.service");
 const create_especialidade_dto_1 = require("./dto/create-especialidade.dto");
-const update_especialidade_dto_1 = require("./dto/update-especialidade.dto");
 let EspecialidadesController = class EspecialidadesController {
     especialidadesService;
     constructor(especialidadesService) {
         this.especialidadesService = especialidadesService;
     }
-    create(createEspecialidadeDto) {
-        return this.especialidadesService.create(createEspecialidadeDto);
+    create(dto) {
+        return this.especialidadesService.create(dto);
     }
     findAll() {
         return this.especialidadesService.findAll();
     }
     findOne(id) {
-        return this.especialidadesService.findOne(+id);
-    }
-    update(id, updateEspecialidadeDto) {
-        return this.especialidadesService.update(+id, updateEspecialidadeDto);
+        return this.especialidadesService.findOne(id);
     }
     remove(id) {
-        return this.especialidadesService.remove(+id);
+        return this.especialidadesService.remove(id);
     }
 };
 exports.EspecialidadesController = EspecialidadesController;
@@ -54,24 +50,16 @@ __decorate([
 ], EspecialidadesController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], EspecialidadesController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_especialidade_dto_1.UpdateEspecialidadeDto]),
-    __metadata("design:returntype", void 0)
-], EspecialidadesController.prototype, "update", null);
-__decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], EspecialidadesController.prototype, "remove", null);
 exports.EspecialidadesController = EspecialidadesController = __decorate([

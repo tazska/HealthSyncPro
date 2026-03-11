@@ -1,15 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { EspecialidadesService } from './especialidades.service';
-import { CreateEspecialidadeDto } from './dto/create-especialidade.dto';
-import { UpdateEspecialidadeDto } from './dto/update-especialidade.dto';
+import { CreateEspecialidadeDto } from   './dto/create-especialidade.dto';
 
 @Controller('especialidades')
 export class EspecialidadesController {
   constructor(private readonly especialidadesService: EspecialidadesService) {}
 
   @Post()
-  create(@Body() createEspecialidadeDto: CreateEspecialidadeDto) {
-    return this.especialidadesService.create(createEspecialidadeDto);
+  create(@Body() dto: CreateEspecialidadeDto) {
+    return this.especialidadesService.create(dto);
   }
 
   @Get()
@@ -18,17 +17,12 @@ export class EspecialidadesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.especialidadesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEspecialidadeDto: UpdateEspecialidadeDto) {
-    return this.especialidadesService.update(+id, updateEspecialidadeDto);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.especialidadesService.findOne(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.especialidadesService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.especialidadesService.remove(id);
   }
 }

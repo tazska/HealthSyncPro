@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Medico } from './entities/medico.entity';
 import { CreateMedicoDto } from './dto/create-medico.dto';
-import { UpdateMedicoDto } from './dto/update-medico.dto';
+import { EspecialidadesService } from '../especialidades/especialidades.service';
 
 @Injectable()
 export class MedicosService {
-  create(createMedicoDto: CreateMedicoDto) {
-    return 'This action adds a new medico';
+  constructor(
+    @InjectRepository(Medico)
+    private readonly medicoRepository: Repository<Medico>,
+    private readonly especialidadesService: EspecialidadesService,
+  ) {}
+
+  async create(dto: CreateMedicoDto): Promise<Medico> {
+    const especialidad = await this.especialidadesService.findOne(dto.especialidadId);
+    const medico = this.medicoRepository.create({
+      ...dto,
+      especialidad,
+    });
+    return await this.medicoRepository.save(medico);
   }
 
-  findAll() {
-    return `This action returns all medicos`;
+  async findAll(): Promise<Medico[]> {
+    return await this.medicoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} medico`;
+  async findOne(id: number): Promise<Medico> {
+    const medico = await this.medicoRepository.findOne({ where: { id } });
+    if (!medico) {
+      throw new NotFoundException(`Médico #${id} no encontrado`);
+    }
+    return medico;
   }
 
-  update(id: number, updateMedicoDto: UpdateMedicoDto) {
-    return `This action updates a #${id} medico`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} medico`;
+  async remove(id: number): Promise<void> {
+    await this.findOne(id);
+    await this.medicoRepository.delete(id);
   }
 }

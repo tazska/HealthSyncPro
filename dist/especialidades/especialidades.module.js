@@ -20,7 +20,7 @@ exports.EspecialidadesModule = EspecialidadesModule = __decorate([
         imports: [typeorm_1.TypeOrmModule.forFeature([especialidad_entity_1.Especialidad])],
         controllers: [especialidades_controller_1.EspecialidadesController],
         providers: [especialidades_service_1.EspecialidadesService],
-        exports: [typeorm_1.TypeOrmModule],
+        exports: [especialidades_service_1.EspecialidadesService],
     })
 ], EspecialidadesModule);
 //# sourceMappingURL=especialidades.module.js.map

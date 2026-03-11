@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EspecialidadesModule } from './especialidades/especialidades.module';
+import { MedicosModule } from './medicos/medicos.module';
+import { PacientesModule } from './pacientes/pacientes.module';
+import { CitasModule } from './citas/citas.module';
+import { DiagnosticosModule } from './diagnosticos/diagnosticos.module';
 
 @Module({
   imports: [
-    // Carga el .env globalmente
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-
-    // Conexión dinámica a MySQL usando variables de entorno
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -20,10 +20,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         username: config.get<string>('DB_USERNAME'),
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_DATABASE'),
-        autoLoadEntities: true, // carga automáticamente las entidades registradas
-        synchronize: true,      // crea/actualiza tablas automáticamente (solo desarrollo)
+        autoLoadEntities: true,
+        synchronize: true,
       }),
     }),
+    EspecialidadesModule,
+    MedicosModule,
+    PacientesModule,
+    CitasModule,
+    DiagnosticosModule,
   ],
 })
 export class AppModule {}

@@ -16,26 +16,22 @@ exports.CitasController = void 0;
 const common_1 = require("@nestjs/common");
 const citas_service_1 = require("./citas.service");
 const create_cita_dto_1 = require("./dto/create-cita.dto");
-const update_cita_dto_1 = require("./dto/update-cita.dto");
 let CitasController = class CitasController {
     citasService;
     constructor(citasService) {
         this.citasService = citasService;
     }
-    create(createCitaDto) {
-        return this.citasService.create(createCitaDto);
+    create(dto) {
+        return this.citasService.create(dto);
     }
     findAll() {
         return this.citasService.findAll();
     }
     findOne(id) {
-        return this.citasService.findOne(+id);
-    }
-    update(id, updateCitaDto) {
-        return this.citasService.update(+id, updateCitaDto);
+        return this.citasService.findOne(id);
     }
     remove(id) {
-        return this.citasService.remove(+id);
+        return this.citasService.remove(id);
     }
 };
 exports.CitasController = CitasController;
@@ -54,24 +50,16 @@ __decorate([
 ], CitasController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], CitasController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_cita_dto_1.UpdateCitaDto]),
-    __metadata("design:returntype", void 0)
-], CitasController.prototype, "update", null);
-__decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], CitasController.prototype, "remove", null);
 exports.CitasController = CitasController = __decorate([
