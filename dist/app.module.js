@@ -9,12 +9,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const typeorm_1 = require("@nestjs/typeorm");
 const especialidades_module_1 = require("./especialidades/especialidades.module");
 const medicos_module_1 = require("./medicos/medicos.module");
 const pacientes_module_1 = require("./pacientes/pacientes.module");
 const citas_module_1 = require("./citas/citas.module");
 const diagnosticos_module_1 = require("./diagnosticos/diagnosticos.module");
+const database_module_1 = require("./database/database.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -22,20 +22,7 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
-            typeorm_1.TypeOrmModule.forRootAsync({
-                imports: [config_1.ConfigModule],
-                inject: [config_1.ConfigService],
-                useFactory: (config) => ({
-                    type: 'mysql',
-                    host: config.get('DB_HOST'),
-                    port: config.get('DB_PORT'),
-                    username: config.get('DB_USERNAME'),
-                    password: config.get('DB_PASSWORD'),
-                    database: config.get('DB_DATABASE'),
-                    autoLoadEntities: true,
-                    synchronize: true,
-                }),
-            }),
+            database_module_1.DatabaseModule,
             especialidades_module_1.EspecialidadesModule,
             medicos_module_1.MedicosModule,
             pacientes_module_1.PacientesModule,
